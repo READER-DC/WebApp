@@ -6,7 +6,7 @@ form {
 
 /* Full-width inputs */
 input[type=text], input[type=password] {
-  width: 50%;
+  width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -22,7 +22,7 @@ button {
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 50%;
+  width: 100%;
 }
 
 /* Add a hover effect for buttons */
@@ -45,7 +45,7 @@ button:hover {
 
 /* Avatar image */
 img.avatar {
-  width: 20%;
+  width: 100%;
   border-radius: 50%;
 }
 
@@ -67,6 +67,6 @@ span.psw {
     float: none;
   }
   .cancelbtn {
-    width: 50%;
+    width: 100%;
   }
 }

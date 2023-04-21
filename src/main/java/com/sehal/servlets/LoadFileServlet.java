@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import com.sehal.model.services.GoodService;
 import com.sehal.model.util.parser.ParsCSV;
 
+import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -21,13 +25,18 @@ import jakarta.servlet.http.Part;
 		maxFileSize = 1024 * 1024 * 100, // 100 MB
 		maxRequestSize = 1024 * 1024 * 200 // 200 MB
 )
-public class LoadFile extends HttpServlet {
+public class LoadFileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	ParsCSV parsCSV;
+	private ParsCSV parsCSV;
+	@Inject
+	GoodService goodService;
 
-	public LoadFile() {
+	@Resource(lookup = "jdbc/PostgressSQL")
+	DataSource dataSource;
+
+	public LoadFileServlet() {
 	}
 
 	protected void doPost(HttpServletRequest request,
@@ -36,15 +45,30 @@ public class LoadFile extends HttpServlet {
 		Part filePart = request.getPart("file");
 		String fileName = filePart.getSubmittedFileName();
 		filePart.write(fileName);
-		parsCSV.readFile(fileName);
-		List<String> list = new ArrayList<>();
-		list = parsCSV.readFile(fileName);
-		String title = parsCSV.readTitle(list);
+		String title = parsCSV.readTitle(fileName);
+
 		System.out.println(title);
+
 		request.setAttribute("Title", title);
+		request.setAttribute("fileName", fileName);
 		RequestDispatcher dispatcher = request
 				.getRequestDispatcher("./title_maping.jsp");
 		dispatcher.forward(request, response);
+
+	}
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		String fileName = request.getParameter("fileName");
+
+		parsCSV.openFile(fileName);
+
+		List<String> list = new ArrayList<>();
+		list = parsCSV.readFile(fileName);
+		list.remove(0);
+
+		goodService.insert(list);
 
 	}
 

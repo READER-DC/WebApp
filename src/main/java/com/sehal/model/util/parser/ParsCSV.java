@@ -11,16 +11,30 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class ParsCSV {
 
-	public String readTitle(List<String> fileParsed) {
-		String titleString;
-		titleString = fileParsed.get(0);
+	public File openFile(String file) {
+		String filString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
+				+ File.separator + file;
+		File inputFile = new File(filString);
+		return inputFile;
+	}
+
+	public String readTitle(String file) {
+		String titleString = null;
+		String filString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
+				+ File.separator + file;
+		File inputFile = new File(filString);
+		try (Scanner myReader = new Scanner(inputFile)) {
+			titleString = myReader.nextLine();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		return titleString;
 	}
 
 	public List<String> readFile(String file) {
-		System.out.println("readFile(String file) - > " + file);
 		List<String> fileParsed = new ArrayList<>();
-		String filString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp" + File.separator + file;
+		String filString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
+				+ File.separator + file;
 		File inputFile = new File(filString);
 
 		try (Scanner myReader = new Scanner(inputFile)) {
@@ -32,7 +46,6 @@ public class ParsCSV {
 			e.printStackTrace();
 		}
 		System.out.println("FILE WAS READ! List size: " + fileParsed.size());
-		System.err.println();
 		return fileParsed;
 
 	}

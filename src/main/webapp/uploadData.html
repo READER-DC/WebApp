@@ -6,10 +6,18 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<form method="post" action="./LoadFile"
-		enctype="multipart/form-data">
-		<label for="matrix">Файл для завантаження</label> <input type="file"
-			name="file" id="matrix" /> <input type="submit" value="Upload" />
+	<form method="POST" action="./LoadFile" enctype="multipart/form-data" id="forn_upload">
+		<label for="matrix">Файл: </label> <input type="file" name="file" id="matrix" /> 
+			<select name="servlet_name" form="forn_upload">
+			<!--Supplement an id here instead of using 'name'-->
+			<option value="TBL_SALES">TBL_SALES</option>
+			<option value="TBL_CURR_STOCK">TBL_CURR_STOCK</option>
+			<option value="TBL_CUR_MATRIX">TBL_CUR_MATRIX</option>
+			<option value="TBL_GOODS_FAMILY">TBL_GOODS_FAMILY</option>
+			<option value="TBL_KONTRAGENTS">TBL_KONTRAGENTS</option>
+			<option value="TBL_GOODS">TBL_GOODS</option>
+		</select> <input type="submit" value="Upload" />
+		
 	</form>
 
 </body>

@@ -7,11 +7,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.sehal.model.services.GoodService;
-import com.sehal.model.util.parser.ParsCSV;
+import com.sehal.model.services.SaleService;
+import com.sehal.util.parser.ParsCSV;
 
 import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,6 +32,8 @@ public class LoadFileServlet extends HttpServlet {
 	private ParsCSV parsCSV;
 	@Inject
 	GoodService goodService;
+	@Inject
+	SaleService saleService;
 
 	@Resource(lookup = "jdbc/PostgressSQL")
 	DataSource dataSource;
@@ -42,33 +44,43 @@ public class LoadFileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		Part filePart = request.getPart("file");
-		String fileName = filePart.getSubmittedFileName();
-		filePart.write(fileName);
-		String title = parsCSV.readTitle(fileName);
-
-		System.out.println(title);
-
-		request.setAttribute("Title", title);
-		request.setAttribute("fileName", fileName);
-		RequestDispatcher dispatcher = request
-				.getRequestDispatcher("./title_maping.jsp");
-		dispatcher.forward(request, response);
+		doGet(request, response);
 
 	}
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		Part filePart = request.getPart("file");
+		String fileName = filePart.getSubmittedFileName();
+		filePart.write(fileName);
 
-		String fileName = request.getParameter("fileName");
+		String servletName = request.getParameter("servlet_name");
+		
+		if (fileName.isEmpty())
+			request.getRequestDispatcher("index.html");
 
 		parsCSV.openFile(fileName);
 
 		List<String> list = new ArrayList<>();
 		list = parsCSV.readFile(fileName);
 		list.remove(0);
+		
 
-		goodService.insert(list);
+		if (servletName.equals("TBL_SALES")) {
+			saleService.insert(list);
+		} else if (servletName.equals("TBL_CURR_STOCK")) {
+			// TODO
+		} else if (servletName.equals("TBL_CUR_MATRIX")) {
+			// TODO
+		} else if (servletName.equals("TBL_GOODS_FAMILY")) {
+			// TODO
+		} else if (servletName.contentEquals("TBL_KONTRAGENTS")) {
+			// TODO
+		} else if (servletName.equals("TBL_GOODS")) {
+			goodService.insert(list);
+		}
+		
+		response.getWriter().append("Data uploade! ");
 
 	}
 

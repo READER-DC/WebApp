@@ -1,4 +1,4 @@
-package com.sehal.model.util.parser;
+package com.sehal.util.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +11,19 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class ParsCSV {
 
-	public File openFile(String file) {
-		String filString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
-				+ File.separator + file;
-		File inputFile = new File(filString);
-		return inputFile;
-	}
+	 public File openFile(String file) {
+	 String filString =
+	 "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
+	 + File.separator + file;
+	 File inputFile = new File(filString);
+	 return inputFile;
+	 }
 
 	public String readTitle(String file) {
 		String titleString = null;
-		String filString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
+		String fileString = "/home/reader-01/JAVA/payara6/glassfish/domains/domain1/generated/jsp/WebApp"
 				+ File.separator + file;
-		File inputFile = new File(filString);
+		File inputFile = new File(fileString);
 		try (Scanner myReader = new Scanner(inputFile)) {
 			titleString = myReader.nextLine();
 		} catch (FileNotFoundException e) {

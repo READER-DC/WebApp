@@ -40,17 +40,10 @@ public class GoodService {
 
 			for (String ln : goods) {
 				String[] item = ln.split(";", 25);
-				if (item.length < 24) {
-					for (String s : item)
-						System.out.print(s + " -/- ");
-					System.out.println();
-					break;
-				}
-
+				
 				for (i = 0; i < 24; i++) {
 					if (item[i].isEmpty())
 						item[i] = "0";
-					// System.out.println(item[i]);
 				}
 				preparedStatement.setInt(1, Integer.valueOf(item[0]));
 				preparedStatement.setString(2, String.valueOf(item[1]));

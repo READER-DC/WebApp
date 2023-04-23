@@ -15,19 +15,20 @@ import jakarta.ejb.Stateless;
 public class GoodService {
 	@Resource(lookup = "jdbc/PostgressSQL")
 	DataSource dataSource;
-	
+
 	public void deleteFromTBL() {
 		String sqlString = "DELETE FROM TBL_GOODS";
-		try(Connection connection = dataSource.getConnection();
-				Statement stm = connection.createStatement()){
+		try (Connection connection = dataSource.getConnection();
+				Statement stm = connection.createStatement()) {
 			stm.executeUpdate(sqlString);
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void insert(List<String> goods) {
 		int i = 0;
+		int counter = 0;
 		deleteFromTBL();
 		goods.remove(0);
 		String sql = "INSERT INTO TBL_GOODS(G_ID, G_NAME, MNF_ID, MNF_NAME, GRT22_ID, GRT22_NAME,"
@@ -40,7 +41,7 @@ public class GoodService {
 
 			for (String ln : goods) {
 				String[] item = ln.split(";", 25);
-				
+
 				for (i = 0; i < 24; i++) {
 					if (item[i].isEmpty())
 						item[i] = "0";
@@ -71,11 +72,13 @@ public class GoodService {
 				preparedStatement.setDouble(24, Double.valueOf(item[23]));
 
 				preparedStatement.executeUpdate();
+				counter++;
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println(counter + " - " + "INSERT INTO TBL_GOODS SUCCESS");
 
 	}
 

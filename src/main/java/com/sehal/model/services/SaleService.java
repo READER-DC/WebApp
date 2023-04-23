@@ -40,7 +40,7 @@ public class SaleService {
 				
 				counter++;
 				if(counter%100000 == 0) {
-					System.out.println(counter + " inserted!");
+					System.out.println(counter + " sales inserted!");
 				}
 				
 			}
@@ -48,6 +48,6 @@ public class SaleService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(counter + " - " + "Sales inserrted into DB");
+		System.out.println(counter + " - " + "INSERT INTO TBL_SALES SUCCESS");
 	}
 }

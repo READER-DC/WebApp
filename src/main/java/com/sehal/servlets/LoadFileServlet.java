@@ -7,7 +7,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.sehal.model.services.GoodService;
+import com.sehal.model.services.GoodsFamilyService;
+import com.sehal.model.services.KontragentService;
+import com.sehal.model.services.MatrixService;
 import com.sehal.model.services.SaleService;
+import com.sehal.model.services.StockService;
 import com.sehal.util.parser.ParsCSV;
 
 import jakarta.annotation.Resource;
@@ -34,6 +38,14 @@ public class LoadFileServlet extends HttpServlet {
 	GoodService goodService;
 	@Inject
 	SaleService saleService;
+	@Inject
+	MatrixService matrixService;
+	@Inject
+	KontragentService kontragentService;
+	@Inject
+	StockService stockService;
+	@Inject
+	GoodsFamilyService goodsFamilyService;
 
 	@Resource(lookup = "jdbc/PostgressSQL")
 	DataSource dataSource;
@@ -55,7 +67,7 @@ public class LoadFileServlet extends HttpServlet {
 		filePart.write(fileName);
 
 		String servletName = request.getParameter("servlet_name");
-		
+
 		if (fileName.isEmpty())
 			request.getRequestDispatcher("index.html");
 
@@ -64,22 +76,21 @@ public class LoadFileServlet extends HttpServlet {
 		List<String> list = new ArrayList<>();
 		list = parsCSV.readFile(fileName);
 		list.remove(0);
-		
 
 		if (servletName.equals("TBL_SALES")) {
 			saleService.insert(list);
 		} else if (servletName.equals("TBL_CURR_STOCK")) {
-			// TODO
-		} else if (servletName.equals("TBL_CUR_MATRIX")) {
-			// TODO
+			stockService.insert(list);
+		} else if (servletName.equals("TBL_CURR_MATRIX")) {
+			matrixService.insert(list);
 		} else if (servletName.equals("TBL_GOODS_FAMILY")) {
-			// TODO
+			goodsFamilyService.insert(list);
 		} else if (servletName.contentEquals("TBL_KONTRAGENTS")) {
-			// TODO
+			kontragentService.insert(list);
 		} else if (servletName.equals("TBL_GOODS")) {
 			goodService.insert(list);
 		}
-		
+
 		response.getWriter().append("Data uploade! ");
 
 	}

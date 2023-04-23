@@ -11,6 +11,10 @@ public class Matrix {
 	private int BZ;
 	private int PROMO;
 	private int BZH;
+
+	public Matrix() {
+		super();
+	}
 	public int getK_ID() {
 		return K_ID;
 	}

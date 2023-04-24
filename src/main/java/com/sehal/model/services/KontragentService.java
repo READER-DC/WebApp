@@ -2,10 +2,13 @@ package com.sehal.model.services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import com.sehal.model.Kontragent;
 
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
@@ -51,6 +54,27 @@ public class KontragentService {
 		}
 		System.out.println(
 				counter + " - " + "INSERT INTO TBL_KONTRAGENTS SUCCESS");
+	}
+
+	public void getAll() {
+		String sql = "SELECT DISTINCT (tcm.k_id), tk.k_name FROM tbl_curr_matrix tcm "
+				+ "LEFT JOIN tbl_kontragents tk ON tcm.k_id = tk.k_id "
+				+ "ORDER BY tk.k_name";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql);) {
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {				
+				Kontragent kontragent = new Kontragent();
+				kontragent.setK_NAME(resultSet.getString(2));
+				kontragent.setK_ID(resultSet.getInt(1));
+				kontragent.addKontragent();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

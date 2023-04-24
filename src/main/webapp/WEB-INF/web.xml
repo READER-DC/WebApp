@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
-  <display-name>WebApp</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-  </welcome-file-list>
+<web-app version="6.0"
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+	<display-name>WebApp</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+	</welcome-file-list>
+<!--	<servlet>
+		<servlet-name>HelloServlet</servlet-name>
+		<servlet-class>com.sehal.servlets.HelloServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HelloServlet</servlet-name>
+		<url-pattern>/Hello</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>LoadFileServlet</servlet-name>
+		<servlet-class>com.sehal.servlets.LoadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoadFileServlet</servlet-name>
+		<url-pattern>/LoadFile</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ServletImg</servlet-name>
+		<servlet-class>com.sehal.servlets.ServletImg</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletImg</servlet-name>
+		<url-pattern>/ServletImg</url-pattern>
+	</servlet-mapping>
+-->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
 </web-app>

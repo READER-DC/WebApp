@@ -1,7 +1,26 @@
 @charset "UTF-8";
 /* Bordered form */
-form {
+form{
   border: 3px solid #f1f1f1;
+}
+
+.formhello {
+  width: 20%;
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+menu{
+  padding-left: 10px;
+  padding-top: 30px;
+  list-style: none;
+  border-radius: 5px;
+  height: 600px;
+  width: 14%;
+  background-color: #c9e6f5;
+}
+li {
+  
 }
 
 /* Full-width inputs */
@@ -24,6 +43,15 @@ button {
   cursor: pointer;
   width: 100%;
 }
+.button{
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 60px;
+}
 
 /* Add a hover effect for buttons */
 button:hover {
@@ -39,6 +67,7 @@ button:hover {
 
 /* Center the avatar image inside this container */
 .imgcontainer {
+  width: 50%
   text-align: center;
   margin: 24px 0 12px 0;
 }

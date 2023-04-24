@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import com.sehal.model.services.GoodService;
 import com.sehal.model.services.GoodsFamilyService;
 import com.sehal.model.services.KontragentService;
@@ -14,7 +12,6 @@ import com.sehal.model.services.SaleService;
 import com.sehal.model.services.StockService;
 import com.sehal.util.parser.ParsCSV;
 
-import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -47,17 +44,12 @@ public class LoadFileServlet extends HttpServlet {
 	@Inject
 	GoodsFamilyService goodsFamilyService;
 
-	@Resource(lookup = "jdbc/PostgressSQL")
-	DataSource dataSource;
-
 	public LoadFileServlet() {
 	}
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		doGet(request, response);
-
 	}
 
 	protected void doGet(HttpServletRequest request,

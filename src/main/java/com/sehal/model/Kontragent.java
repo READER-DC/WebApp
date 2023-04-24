@@ -1,5 +1,8 @@
 package com.sehal.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Kontragent {
 
 	private int K_ID;
@@ -11,10 +14,25 @@ public class Kontragent {
 	private String BG_FMT_NAME;
 	private int BG_REG_ID;
 	private String BG_REG_NAME;
+	
+	public static List<Kontragent> kontragents = new ArrayList<>();
 
 	public Kontragent() {
 		super();
 	}
+	
+	public void addKontragent() {
+		kontragents.add(this);
+	}
+	
+	public List<Kontragent> getAll(){
+		return kontragents;
+	}
+	
+	public String toString() {
+		return K_NAME;
+	}
+	
 	public int getK_ID() {
 		return K_ID;
 	}

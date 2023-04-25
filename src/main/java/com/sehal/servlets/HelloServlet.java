@@ -1,7 +1,6 @@
 package com.sehal.servlets;
 
 import java.io.IOException;
-import com.sehal.model.User;
 import com.sehal.model.services.UserService;
 
 import jakarta.inject.Inject;
@@ -17,7 +16,7 @@ public class HelloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	UserService userService;
+	private UserService userService;
 //	@Inject
 //	User user;
 	
@@ -36,7 +35,7 @@ public class HelloServlet extends HttpServlet {
 //TODO create Authorization & Authentication & Accounting
 		if (userService.authorization(uname, psw)) {
 			RequestDispatcher dispatcher = request
-					.getRequestDispatcher("/mainWindow.html");
+					.getRequestDispatcher("./mainWindow.html");
 			dispatcher.forward(request, response);
 		} else {
 			System.out.println("User not found!");	

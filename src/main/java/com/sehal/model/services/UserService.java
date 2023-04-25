@@ -14,9 +14,10 @@ import jakarta.ejb.Stateless;
 public class UserService {
 
 	@Resource(lookup = "jdbc/PostgressSQL")
-	DataSource dataSource;
-
+	private DataSource dataSource;
+	
 	public boolean authorization(String userName, String psw) {
+		System.out.println("authorization started!");
 		boolean auth = false;
 		long id = 0l;
 		String sql = "SELECT id_user FROM TBL_USERS WHERE first_name LIKE(?) and pass LIKE (?)";

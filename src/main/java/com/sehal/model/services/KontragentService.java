@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.sehal.model.DistribytionReport;
 import com.sehal.model.Kontragent;
 
 import jakarta.annotation.Resource;
@@ -18,6 +20,54 @@ public class KontragentService {
 
 	@Resource(lookup = "jdbc/PostgressSQL")
 	DataSource dataSource;
+	
+	public List<String> makeReport1byKontragent(int k_id) {
+		List<String> list = new ArrayList<>();
+		String sql = "SELECT "
+				+ "	t1.k_id,"
+				+ "	t1.g_id,"
+				+ "	CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END g_id_second ,"
+				+ "	t1.formats,"
+				+ "	CASE WHEN ( "
+				+ "			(COALESCE(t1.mins, 0) + COALESCE(t1.adr, 0) + COALESCE(t1.bzh, 0)) > 0 \n"
+				+ "			AND\n"
+				+ "			t1.g_id = ( CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id END) \n"
+				+ "		) THEN 1 ELSE 0 END nd_plan,"
+				+ "	CASE WHEN (t1.g_id = CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END AND  t4.qty1 > 0 ) THEN 1 ELSE 0 END nd_fact,"
+				+ "	CASE WHEN (t1.g_id = CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END) THEN t1.mins ELSE 0 END mins,"
+				+ "	CASE WHEN (t1.g_id = CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END) THEN t1.maxs ELSE 0 END maxs,"
+				+ "	CASE WHEN (t1.g_id = CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END) THEN t1.adr ELSE 0 END adr,"
+				+ "	CASE WHEN (t1.g_id = CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END) THEN t1.bzh ELSE 0 END bzh,"
+				+ "	COALESCE (t4.qty1, 0) qty_stock"
+				+ " FROM tbl_curr_matrix t1"
+				+ " LEFT JOIN tbl_goods_family t2 ON t1.g_id = t2.g_id_main"
+				+ " LEFT JOIN (\n"
+				+ "			SELECT fk_wh_k_id, fk_g_id, sum(qty) AS qty1"
+				+ "			FROM tbl_curr_stocks"
+				+ "			GROUP BY fk_wh_k_id, fk_g_id) t4"
+				+ "			ON fk_wh_k_id = t1.k_id AND fk_g_id = t1.g_id"
+				+ " WHERE t1.k_id = ?";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql);) {
+			preparedStatement.setInt(1, k_id);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				DistribytionReport dr = new DistribytionReport();
+					dr.setK_id(rs.getInt("k_id"));
+					dr.setG_id(rs.getInt("g_id"));
+					dr.setMaxs(rs.getDouble("maxs"));
+					dr.setQty_stock(rs.getInt("qty_stock"));
+					dr.add();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;	
+	}
 
 	public void insert(List<String> kontragents) {
 		int counter = 0;

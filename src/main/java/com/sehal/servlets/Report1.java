@@ -1,6 +1,6 @@
 package com.sehal.servlets;
-
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.ServletException;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.sehal.model.DistribytionReport;
 import com.sehal.model.Kontragent;
 import com.sehal.model.services.KontragentService;
 
@@ -30,17 +31,25 @@ public class Report1 extends HttpServlet {
 		String k_id = "0";
 		if (Kontragent.kontragents.isEmpty())
 			kontragentService.getAll();
+		
+		if(DistribytionReport.distribytionLines.isEmpty())
+			kontragentService.makeReport1();
+		
 		if (request.getParameterNames().hasMoreElements()) {
+			
 			Map<String, String[]> param = request.getParameterMap();
+			
 			for (Map.Entry<String, String[]> entry : param.entrySet()) {
 				System.out.print(entry.getKey() + "--");
 				for (String value : entry.getValue()) {
 					k_id = value;
 				}
 			}
-			kontragentService.makeReport1byKontragent(Integer.valueOf(k_id));
+			
+			List<String> mylist = kontragentService
+					.makeReport1byKontragent(Integer.valueOf(k_id));
+			request.setAttribute("k_id", k_id);
 		}
-
 		request.getRequestDispatcher("/report1.jsp").forward(request, response);
 
 	}

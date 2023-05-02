@@ -12,31 +12,6 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
-<!--	<servlet>
-		<servlet-name>HelloServlet</servlet-name>
-		<servlet-class>com.sehal.servlets.HelloServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>HelloServlet</servlet-name>
-		<url-pattern>/Hello</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>LoadFileServlet</servlet-name>
-		<servlet-class>com.sehal.servlets.LoadFileServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>LoadFileServlet</servlet-name>
-		<url-pattern>/LoadFile</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>ServletImg</servlet-name>
-		<servlet-class>com.sehal.servlets.ServletImg</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ServletImg</servlet-name>
-		<url-pattern>/ServletImg</url-pattern>
-	</servlet-mapping>
--->
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>

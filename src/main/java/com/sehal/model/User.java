@@ -3,12 +3,6 @@ package com.sehal.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.ejb.Stateless;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 public class User {
 
 	private Long id_user;

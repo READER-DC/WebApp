@@ -3,13 +3,17 @@ package com.sehal.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.ejb.Startup;
+import jakarta.ejb.Stateless;
+@Stateless
+@Startup
 public class DistribytionReport {
 	private int k_id;
 	private int g_id;
 	private int g_id_second;
 	private String format;
 	private int nd_plan;
-	private int k_fact;
+	private int nd_fact;
 	private int minss;
 	private double maxs;
 	private int adr;
@@ -17,6 +21,7 @@ public class DistribytionReport {
 	private int qty_stock;
 	
 	public static List<DistribytionReport> distribytionLines = new ArrayList<>();
+	
 	
 	public void add() {
 		distribytionLines.add(this);
@@ -55,11 +60,11 @@ public class DistribytionReport {
 	public void setNd_plan(int nd_plan) {
 		this.nd_plan = nd_plan;
 	}
-	public int getK_fact() {
-		return k_fact;
+	public int getNd_fact() {
+		return nd_fact;
 	}
-	public void setK_fact(int k_fact) {
-		this.k_fact = k_fact;
+	public void setNd_fact(int k_fact) {
+		this.nd_fact = k_fact;
 	}
 	public int getMinss() {
 		return minss;

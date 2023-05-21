@@ -27,6 +27,17 @@ public class DistribytionReport {
 		distribytionLines.add(this);
 	}
 	
+	public List<DistribytionReport> distByK_ID(int k_id) {
+		List<DistribytionReport> distByK_ID = new ArrayList<>();
+		for(DistribytionReport line: distribytionLines) {
+			if(k_id == line.k_id) {
+				distByK_ID.add(line);
+			}	
+		}
+		return distByK_ID;
+	}
+	
+	
 	public DistribytionReport() {
 		super();
 	}

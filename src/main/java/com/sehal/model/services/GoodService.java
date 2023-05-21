@@ -2,12 +2,14 @@ package com.sehal.model.services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.sehal.model.Good;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 
@@ -15,6 +17,77 @@ import jakarta.ejb.Stateless;
 public class GoodService {
 	@Resource(lookup = "jdbc/PostgressSQL")
 	DataSource dataSource;
+
+	public List<Good> getAll() {
+		int counter = 0;
+		String sql = "SELECT tg.cat_name, tg.cat_id, tg.scat_name, tg.scat_id"
+				+ ", tg.gr_name, tg.gr_id ,tg.mgr_name, tg.mgr_id, tg.mnf_name, tg.g_id "
+				+ "FROM tbl_goods tg";
+		try (Connection connection = dataSource.getConnection();
+				Statement stm = connection.createStatement()) {
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				Good good = new Good();
+				good.setCAT_NAME(rs.getString("cat_name"));
+				good.setCAT_ID(rs.getInt("cat_id"));
+				good.setSCAT_NAME(rs.getString("scat_name"));
+				good.setSCAT_ID(rs.getInt("scat_id"));
+				good.setGR_NAME(rs.getString("gr_name"));
+				good.setGR_ID(rs.getInt("gr_id"));
+				good.setMGR_NAME(rs.getString("mgr_name"));
+				good.setMGR_ID(rs.getInt("mgr_id"));
+				good.setMNF_NAME(rs.getString("mnf_name"));
+				good.setG_ID(rs.getInt("g_id"));
+				good.add();
+				
+				counter++;
+
+				if (counter % 10000 == 0) {
+					System.out.println("List<Good> progress: " + counter);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return Good.goods;
+	}
+	
+	public List<Good> getCategories() {
+		int counter = 0;
+		String sql = "SELECT DISTINCT tg.cat_id, tg.cat_name "
+				+ "FROM tbl_goods tg";
+		try (Connection connection = dataSource.getConnection();
+				Statement stm = connection.createStatement()) {
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				Good category = new Good();
+				category.setCAT_NAME(rs.getString("cat_name"));
+				category.setCAT_ID(rs.getInt("cat_id"));
+//				good.setSCAT_NAME(rs.getString("scat_name"));
+//				good.setSCAT_ID(rs.getInt("scat_id"));
+//				good.setGR_NAME(rs.getString("gr_name"));
+//				good.setGR_ID(rs.getInt("gr_id"));
+//				good.setMGR_NAME(rs.getString("mgr_name"));
+//				good.setMGR_ID(rs.getInt("mgr_id"));
+//				good.setMNF_NAME(rs.getString("mnf_name"));
+//				good.setG_ID(rs.getInt("g_id"));
+				category.addCategories();
+				
+				counter++;
+
+				if (counter % 10000 == 0) {
+					System.out.println("List<category> progress: " + counter);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return Good.categories;
+	}
 
 	public void deleteFromTBL() {
 		String sqlString = "DELETE FROM TBL_GOODS";

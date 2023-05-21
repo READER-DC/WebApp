@@ -93,7 +93,7 @@ public class KontragentService {
 				+ "			SELECT fk_wh_k_id, fk_g_id, sum(qty) AS qty1"
 				+ "			FROM tbl_curr_stocks"
 				+ "			GROUP BY fk_wh_k_id, fk_g_id) t4"
-				+ "			ON fk_wh_k_id = t1.k_id AND fk_g_id = t1.g_id";
+				+ "			ON fk_wh_k_id = t1.k_id AND fk_g_id = (CASE WHEN (t2.g_id IS NULL) THEN t1.g_id ELSE t2.g_id  END)";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql);) {

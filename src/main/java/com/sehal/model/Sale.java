@@ -1,6 +1,8 @@
 package com.sehal.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Sale {
 	private Date DATE_DOC;
@@ -10,6 +12,15 @@ public class Sale {
 	private boolean IS_PICKUP;
 	private boolean IS_WHOLESALE;
 
+	public static List <Sale> sales = new ArrayList<>();
+	
+	public void add() {
+		sales.add(this);
+	}
+	public void clear() {
+		sales.clear();
+	}
+	
 	public Sale() {
 	}
 

@@ -1,5 +1,8 @@
 package com.sehal.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Good {
 
 	private int G_ID;
@@ -29,6 +32,32 @@ public class Good {
 	public int getG_ID() {
 		return G_ID;
 	}
+	
+	public static List<Good> goods = new ArrayList<>();
+	public static List<Good> categories = new ArrayList<>();
+	public static List<Good> subCategories = new ArrayList<>();
+	public static List<Good> groups = new ArrayList<>();
+	public static List<Good> subGroups = new ArrayList<>();
+	
+	public void add() {
+		goods.add(this);
+	}
+	public void addCategories() {
+		categories.add(this);
+	}
+	public void addgroups() {
+		groups.add(this);
+	}
+	
+	public List<Good> getAll(){
+		return goods;
+	}
+	
+	public List<Good> getCategories(){
+		return categories;
+	}
+	
+	
 	public void setG_ID(int g_ID) {
 		G_ID = g_ID;
 	}

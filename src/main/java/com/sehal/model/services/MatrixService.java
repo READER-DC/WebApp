@@ -13,7 +13,7 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class MatrixService {
 
-	@Resource(lookup = "jdbc/PostgressSQL")
+	@Resource(lookup = "jdbc/PostgreSQL")
 	DataSource dataSource;
 
 	public void insert(List<String> matrixes) {

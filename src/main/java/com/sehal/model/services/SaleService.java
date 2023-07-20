@@ -17,7 +17,7 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class SaleService {
 
-	@Resource(lookup = "jdbc/PostgressSQL")
+	@Resource(lookup = "jdbc/PostgreSQL")
 	DataSource dataSource;
 
 	public List<Sale> getSales(String dateStart, String dateEnd) {

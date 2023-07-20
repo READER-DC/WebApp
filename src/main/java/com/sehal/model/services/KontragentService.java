@@ -18,7 +18,7 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class KontragentService {
 
-	@Resource(lookup = "jdbc/PostgressSQL")
+	@Resource(lookup = "jdbc/PostgreSQL")
 	DataSource dataSource;
 	
 	public List<String> makeReport1byKontragent(int k_id) {
@@ -54,11 +54,15 @@ public class KontragentService {
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				DistribytionReport dr = new DistribytionReport();
-					dr.setK_id(rs.getInt("k_id"));
-					dr.setG_id(rs.getInt("g_id"));
-					dr.setMaxs(rs.getDouble("maxs"));
-					dr.setQty_stock(rs.getInt("qty_stock"));
-					dr.add();
+				dr.setK_id(rs.getInt("k_id"));
+				dr.setG_id(rs.getInt("g_id"));
+				dr.setG_id_second(rs.getInt("g_id_second"));
+				dr.setFormat(rs.getString("formats"));
+				dr.setNd_plan(rs.getInt("nd_plan"));
+				dr.setNd_fact(rs.getInt("nd_fact"));
+				dr.setMaxs(rs.getDouble("maxs"));
+				dr.setQty_stock(rs.getInt("qty_stock"));
+				dr.add();
 			}
 			
 		} catch (SQLException e) {

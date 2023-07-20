@@ -13,7 +13,7 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class UserService {
 
-	@Resource(lookup = "jdbc/PostgressSQL")
+	@Resource(lookup = "jdbc/PostgreSQL")
 	private DataSource dataSource;
 	
 	public boolean authorization(String userName, String psw) {

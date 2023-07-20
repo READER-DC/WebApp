@@ -7,6 +7,9 @@ import java.util.List;
 import com.sehal.model.DistribytionReport;
 import com.sehal.model.Good;
 
+import jakarta.ejb.Stateless;
+
+@Stateless
 public class ReportDistribution {
 	int kId;
 	int categoryId;
@@ -16,132 +19,94 @@ public class ReportDistribution {
 	LocalDate dateStart;
 	LocalDate dateEnd;
 
-	double distributionByKId(String kIdRequest) {
-		kId = Integer.valueOf(kIdRequest);
+	public double distribution(String kId, String categotyId) {
+		int ndPlan = 0;
+		int ndFact = 0;
 		double distribution = 0d;
-		int nd_plan = 0;
-		int nd_fact = 0;
-		// int qty = 0;
-		if (kId == 0) {
-			for (DistribytionReport item : DistribytionReport.distribytionLines) {
-				nd_plan += item.getNd_plan();
-				nd_fact += item.getNd_fact();
-				// qty += item.getQty_stock();
-			}
-			distribution = nd_fact / nd_plan * 100d;
-		} else {
-			for (DistribytionReport item : DistribytionReport.distribytionLines) {
-				if (kId == item.getK_id()) {
-					nd_plan += item.getNd_plan();
-					nd_fact += item.getNd_fact();
-				}
-				distribution = nd_fact / nd_plan * 100d;
-			}
-		}
+		List<DistribytionReport> distribytionReports = distributionsByKIdAndCategory(
+				kId, categotyId);
 
+		for (DistribytionReport distribytionReport : distribytionReports) {
+			ndPlan += distribytionReport.getNd_plan();
+			ndFact += distribytionReport.getNd_fact();
+		}
+		distribution = 100d * ndFact / ndPlan;
 		return distribution;
 	}
+	public List<DistribytionReport> distributionsByKId(String kIdRequest) {
+		kId = Integer.valueOf(kIdRequest);
+		List<DistribytionReport> distributionsByKId = new ArrayList<>();
+		if (kId == 0) {
+			distributionsByKId = DistribytionReport.distribytionLines;
+		} else {
+			for(DistribytionReport distribytionReport : DistribytionReport.distribytionLines) {
+				if(distribytionReport.getK_id() == kId) {
+					distributionsByKId.add(distribytionReport);
+				}
+			}
+		}
+		return distributionsByKId;		
+	}
 
-	double distributionByCategory(String categoryRequest) {
+	public List<Integer> distributionsByCategory(String categoryRequest) {
 		categoryId = Integer.valueOf(categoryRequest);
-		List<Good> goodsByCategory = new ArrayList<>();
-		double distribution = 0d;
-		int nd_plan = 0;
-		int nd_fact = 0;
-
-		if (categoryId != 0) {
-			goodsByCategory.clear();
+		List<Integer> skuByCategory = new ArrayList<>();
+		if(categoryId == 0) {
+			for (Good item : Good.goods) 
+				skuByCategory.add(item.getG_ID());
+		} else {
 			for (Good item : Good.goods) {
 				if (item.getCAT_ID() == categoryId) {
-					goodsByCategory.add(item);
-				}
-			}
-		} else {
-			goodsByCategory = Good.categories;
-		}
-
-		for (Good item : goodsByCategory) {
-			for (DistribytionReport distribytionReport : DistribytionReport.distribytionLines) {
-				if (distribytionReport.getG_id() == item.getG_ID()) {
-					nd_plan += distribytionReport.getNd_plan();
-					nd_fact += distribytionReport.getNd_fact();
+					skuByCategory.add(item.getG_ID());
 				}
 			}
 		}
-		distribution = nd_fact / nd_plan * 100d;
-		return distribution;
+		return skuByCategory;
 	}
-	double distributionByGroup(String groupIdRequest) {
+
+	public List<Integer> distributionsByGroup(
+			String groupIdRequest) {
 		groupId = Integer.valueOf(groupIdRequest);
-		List<Good> goodsByGroup = new ArrayList<>();
-		double distribution = 0d;
-		int nd_plan = 0;
-		int nd_fact = 0;
-		if (groupId != 0) {
-			goodsByGroup.clear();
-			for (Good good : Good.goods) {
-				if (good.getG_ID() == groupId) {
-					goodsByGroup.add(good);
-				}
-			}
+		List<Integer> skusByGroup = new ArrayList<>();
+		if(categoryId == 0) {
+			for (Good good : Good.goods) 
+				skusByGroup.add(good.getG_ID());
 		} else {
-			distributionByCategory("0");
-		}
-		for (Good good : goodsByGroup) {
-			for (DistribytionReport distribytionReport : DistribytionReport.distribytionLines) {
-				if (distribytionReport.getG_id() == good.getG_ID()) {
-					nd_plan += distribytionReport.getNd_plan();
-					nd_fact += distribytionReport.getNd_fact();
+			for (Good good : Good.goods) {
+				if (good.getCAT_ID() == categoryId) {
+					skusByGroup.add(good.getG_ID());
 				}
 			}
 		}
-		distribution = nd_fact / nd_plan * 100d;
-		return distribution;
+		return skusByGroup;
 	}
 
-	double distributionByKIdAndCategory(String kidRequest,
-			String categoryRequest) {
-		double distribution = 0d;
-		int nd_plan = 0;
-		int nd_fact = 0;
-		int kId = Integer.valueOf(kidRequest);
-		int categoryId = Integer.valueOf(categoryRequest);
-		// List<Good> distributionsByKIdAndCategory = new ArrayList<>();
-		for (Good good : Good.goods) {
-			if (good.getCAT_ID() == categoryId) {
-				for (DistribytionReport distribytionReport : DistribytionReport.distribytionLines) {
-					if (distribytionReport.getK_id() == kId
-							&& good.getG_ID() == distribytionReport.getG_id()) {
-						nd_plan += distribytionReport.getNd_plan();
-						nd_fact += distribytionReport.getNd_fact();
-					}
+	public List<DistribytionReport> distributionsByKIdAndCategory(
+			String kidRequest, String categoryRequest) {
+		System.out.println("Start distributionsByKIdAndCategory");
+		List<DistribytionReport> distributionsByKIdAndCategory = new ArrayList<>();
+		List<DistribytionReport> distributionsByKId = distributionsByKId(
+				kidRequest);
+		List<Integer> skusByCategory = distributionsByCategory(categoryRequest);
+		System.out.println(
+				"distributionsByKId size:" + distributionsByKId.size());
+		System.out.println(
+				"distributionsByCategory size:" + skusByCategory.size());
+		for (DistribytionReport distribytionByKId : distributionsByKId) {
+			for (Integer skuByCategory : skusByCategory) {
+				if (distribytionByKId.getG_id() == skuByCategory) {
+					distributionsByKIdAndCategory.add(distribytionByKId);
 				}
 			}
-
 		}
-		distribution = nd_fact / nd_plan * 100d;
-		return distribution;
+		return distributionsByKIdAndCategory;
 	}
-	double distributionByKIdAndGroup(String kidRequest, String groupRequest) {
-		double distribution = 0d;
-		int nd_plan = 0;
-		int nd_fact = 0;
-		int kId = Integer.valueOf(kidRequest);
-		int groupId = Integer.valueOf(groupRequest);
-		for (Good good : Good.goods) {
-			if (good.getGR_ID() == groupId) {
-				for (DistribytionReport distribytionReport : DistribytionReport.distribytionLines) {
-					if (distribytionReport.getK_id() == kId
-							&& good.getG_ID() == distribytionReport.getG_id()) {
-						nd_plan += distribytionReport.getNd_plan();
-						nd_fact += distribytionReport.getNd_fact();
-					}
-				}
-			}
 
-		}
-		distribution = nd_fact / nd_plan * 100d;
-		return distribution;
+	public List<DistribytionReport> distributionsByKIdAndGroup(
+			String kidRequest, String groupRequest) {
+		List<DistribytionReport> distribytionReports = new ArrayList<>();
+
+		return distribytionReports;
 	}
 
 	public ReportDistribution() {

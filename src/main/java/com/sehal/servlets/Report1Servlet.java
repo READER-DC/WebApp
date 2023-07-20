@@ -16,6 +16,7 @@ import com.sehal.model.Sale;
 import com.sehal.model.services.GoodService;
 import com.sehal.model.services.KontragentService;
 import com.sehal.model.services.SaleService;
+import com.sehal.report1.ReportDistribution;
 
 import jakarta.inject.Inject;
 
@@ -29,6 +30,8 @@ public class Report1Servlet extends HttpServlet {
 	private GoodService goodService;
 	@Inject
 	private SaleService saleService;
+	@Inject
+	ReportDistribution distribution;
 
 	public Report1Servlet() {
 
@@ -74,12 +77,21 @@ public class Report1Servlet extends HttpServlet {
 			String dateStart = request.getParameter("date_start");
 			String dateEnd = request.getParameter("date_end");
 			String categories = request.getParameter("categories");
-			if (!k_id.equals("0")) {
-				k_id = request.getParameter("kontragents");
-				request.setAttribute("k_id", k_id);
-			} else {
-				request.setAttribute("k_id", "0");
-			}
+			
+//			ReportDistribution distribution = new ReportDistribution();
+			double distr1 = distribution.distribution(k_id, categories);
+			String answ = String.format("%.2f", distr1);
+			System.out.println("answ = " + answ);
+			request.setAttribute("answ", answ);
+//			if (!k_id.equals("0")) {
+//				k_id = request.getParameter("kontragents");
+//				ReportDistribution distribution = new ReportDistribution();
+//				double distr1 = distribution.distributionByKId(k_id);
+//				String answ = String.format("%.2f", distr1);
+//				request.setAttribute("answ", answ);
+//			} else {
+//				request.setAttribute("k_id", "0");
+//			}
 			if (!dateStart.isEmpty() && !dateEnd.isEmpty()) {
 				request.setAttribute("dateStart", dateStart);
 				request.setAttribute("dateEnd", dateEnd);
@@ -106,7 +118,7 @@ public class Report1Servlet extends HttpServlet {
 			request.setAttribute("dateStart",
 					LocalDate.now().minusDays(60).toString());
 			request.setAttribute("dateEnd", LocalDate.now().toString());
-			request.setAttribute("categories", "All");
+			request.setAttribute("categories", "0");
 			request.getRequestDispatcher("/report1_1.jsp").forward(request,
 					response);
 		}

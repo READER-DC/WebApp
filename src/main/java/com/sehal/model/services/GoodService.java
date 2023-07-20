@@ -15,14 +15,16 @@ import jakarta.ejb.Stateless;
 
 @Stateless
 public class GoodService {
-	@Resource(lookup = "jdbc/PostgressSQL")
+	@Resource(lookup = "jdbc/PostgreSQL")
 	DataSource dataSource;
 
 	public List<Good> getAll() {
 		int counter = 0;
 		String sql = "SELECT tg.cat_name, tg.cat_id, tg.scat_name, tg.scat_id"
 				+ ", tg.gr_name, tg.gr_id ,tg.mgr_name, tg.mgr_id, tg.mnf_name, tg.g_id "
-				+ "FROM tbl_goods tg";
+				+ "FROM tbl_goods tg "
+				+ "WHERE tg.cat_name LIKE 'ACC' OR tg.cat_name LIKE 'AV' OR tg.cat_name LIKE 'SDA' "
+				+ "OR tg.cat_name LIKE 'MDA' OR tg.cat_name LIKE 'DIG'";
 		try (Connection connection = dataSource.getConnection();
 				Statement stm = connection.createStatement()) {
 			ResultSet rs = stm.executeQuery(sql);

@@ -1,3 +1,4 @@
+<%@page import="com.sehal.report1.ReportDistribution"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.time.Period"%>
 <%@page import="java.time.LocalDate"%>
@@ -66,21 +67,21 @@
 
 		<%
 		//TODO: всегда идет по пути елсе.
-		String k_id = (String) request.getAttribute("k_id");
+		//String k_id = (String) request.getAttribute("k_id");
 		String dateStart = (String) request.getAttribute("dateStart");
 		String dateEnd = (String) request.getAttribute("dateEnd");
 		String categories = (String) request.getAttribute("categories");
 		List<Good> goodsByCategory = new ArrayList<>();
-		//goodsByCategory = Good.categories;
+		
 		List<DistribytionReport> distrRepByK_ID = new ArrayList<>();
-		//
+		
 		List<Sale> sales = new ArrayList<>();
-		System.out.print("k_id: " + k_id + " // categories: " + categories);
+		//System.out.print("k_id: " + k_id + " // categories: " + categories);
 		
 		int nd_plan = 0, nd_fact = 0, qty = 0;
 		long days = 0l , sale = 0l;
 		double distr = 0d, salePerDay = 0d;
-		if(!categories.equals("0")){
+	/* 	if(!categories.equals("0")){
 			goodsByCategory.clear();
 			int category = Integer.valueOf(categories);
 			for(Good item : Good.goods){
@@ -90,9 +91,9 @@
 			}
 		} else{
 			goodsByCategory = Good.categories;
-		}
+		} */
 		
-		if (!k_id.equals("0") ){
+		/* if (!k_id.equals("0") ){
 			distrRepByK_ID.clear();
 			int shop = Integer.valueOf(k_id);
 			for(DistribytionReport line : DistribytionReport.distribytionLines){
@@ -102,7 +103,7 @@
 			}
 		} else {
 			distrRepByK_ID = DistribytionReport.distribytionLines;
-		}
+		} */
 		
 		if(!goodsByCategory.equals(Good.categories)) {
 			for(DistribytionReport report : distrRepByK_ID){
@@ -123,16 +124,16 @@
 			}
 		}
 		
-		if (!k_id.equals("0") && !k_id.equals("All")) {
+		/* if (!k_id.equals("0") && !k_id.equals("All")) {
 			int shop = Integer.valueOf(k_id);
-			for (DistribytionReport item : DistribytionReport.distribytionLines) {
-				if (shop == item.getK_id()) {
-					nd_plan += item.getNd_plan();
-					nd_fact += item.getNd_fact();
-					qty += item.getQty_stock();
-				}
-			}
-			if (!dateStart.equals("not") && !dateEnd.equals("not")) {
+			//for (DistribytionReport item : DistribytionReport.distribytionLines) {
+				//if (shop == item.getK_id()) {
+				//	nd_plan += item.getNd_plan();
+				//	nd_fact += item.getNd_fact();
+				//	qty += item.getQty_stock();
+				//}
+			} */
+			/* if (!dateStart.equals("not") && !dateEnd.equals("not")) {
 				
 				for (Sale item : Sale.sales) {
 					if (shop == item.getFK_K_ID())
@@ -145,35 +146,37 @@
 
 			}
 		} else {
-			for (DistribytionReport item : DistribytionReport.distribytionLines) {
-				nd_plan = nd_plan + item.getNd_plan();
-				nd_fact = nd_fact + item.getNd_fact();
-				qty += item.getQty_stock();	
-			}
+			//for (DistribytionReport item : DistribytionReport.distribytionLines) {
+				//nd_plan = nd_plan + item.getNd_plan();
+				//nd_fact = nd_fact + item.getNd_fact();
+				//qty += item.getQty_stock();	
+			//}
 			if (!dateStart.isEmpty() && !dateEnd.isEmpty()) {
 				for (Sale itemAll : Sale.sales) {
 					sale += itemAll.getQTY();
 				}
 			}
-			LocalDate date1 = LocalDate.parse(dateStart);
-			LocalDate date2 = LocalDate.parse(dateEnd);		days = ChronoUnit.DAYS.between(date1, date2) + 1;
-			System.out.println("Дней = " + days);
-		} 
+			
+		} */ 
+		LocalDate date1 = LocalDate.parse(dateStart);
+		LocalDate date2 = LocalDate.parse(dateEnd);		days = ChronoUnit.DAYS.between(date1, date2) + 1;
+		System.out.println("Дней = " + days);
 
-		distr = nd_fact * 100d / nd_plan;
+		//distr = nd_fact * 100d / nd_plan;
 
-		System.out.print(k_id + "  " + nd_plan + "  " + nd_fact + "  " + qty + "  "
-				+ distr + "  " + sale);
-		String answ = String.format("%.2f", distr);
+		/* System.out.print(k_id + "  " + nd_plan + "  " + nd_fact + "  " + qty + "  "
+				+ distr + "  " + sale); */
+		//String answ = String.format("%.2f", distr);
 		%>
+<%
 
+%>
 		<div class="main_window">
 			Main Window Report
 			<div class="panel_container">
 				<div class="panel1">
 					Дистрибуция
-					<p><%=answ%>
-						%
+					<p>${answ}%
 				</div>
 				<div class="panel2">
 					Остаток шт

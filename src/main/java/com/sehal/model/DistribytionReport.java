@@ -19,25 +19,23 @@ public class DistribytionReport {
 	private int adr;
 	private int bzx;
 	private int qty_stock;
-	
+
 	public static List<DistribytionReport> distribytionLines = new ArrayList<>();
-	
-	
+
 	public void add() {
 		distribytionLines.add(this);
 	}
-	
+
 	public List<DistribytionReport> distByK_ID(int k_id) {
 		List<DistribytionReport> distByK_ID = new ArrayList<>();
-		for(DistribytionReport line: distribytionLines) {
-			if(k_id == line.k_id) {
+		for (DistribytionReport line : distribytionLines) {
+			if (k_id == line.k_id) {
 				distByK_ID.add(line);
-			}	
+			}
 		}
 		return distByK_ID;
 	}
-	
-	
+
 	public DistribytionReport() {
 		super();
 	}
@@ -113,7 +111,5 @@ public class DistribytionReport {
 		return "DistribytionReport [k_id=" + k_id + ", g_id=" + g_id + ", maxs="
 				+ maxs + ", qty_stock=" + qty_stock + "]\n";
 	}
-	
-	
 
 }

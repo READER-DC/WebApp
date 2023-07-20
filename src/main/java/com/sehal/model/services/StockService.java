@@ -14,7 +14,7 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class StockService {
 
-	@Resource(lookup = "jdbc/PostgressSQL")
+	@Resource(lookup = "jdbc/PostgreSQL")
 	DataSource dataSource;
 
 	public void insert(List<String> stocks) {
